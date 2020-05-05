@@ -1,3 +1,3 @@
 # stock_database
-This is a project about stock website.
-test line
+This is a project about stock website.  
+test
