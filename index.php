@@ -11,17 +11,16 @@
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
     header("Cache-Control: no-cache");
     header("Pragma: no-cache");
-    #header("Content-type:text/html;charset=UTF-8;");
+    header("Content-type:text/html;charset=UTF-8;");
     setlocale(LC_ALL, 'en_US.UTF-8');
 
 
     $conn = new mysqli("localhost", "root", "fucku", "stock");
-
-    if ($conn->connect_error) {
+    if ($conn->connect_error)
         die("Connection failed: " . $conn->connect_error);
-    }
-
     $conn->set_charset("utf8");
+
+
     #file_handle($conn);
     query_sql($conn, "select * from stock_name;");
 
@@ -41,7 +40,7 @@
         }
     }
 
-    function into_db($conn, $stock_code, $stock_name)
+    function insert_to_database($conn, $stock_code, $stock_name)
     {
         $sql = "INSERT INTO stock_name (stock_code, chinese_name)
             VALUES ('" . $stock_code . "','" . $stock_name . "');";
@@ -60,9 +59,9 @@
         $filesize = filesize($filename) + 1;
 
         if (!$fp) {
-            echo "開檔失敗<br>";
+            echo "Load failed!<br>";
         } else {
-            echo "開檔成功<br>";
+            echo "Load successfully<br>";
 
 
             while (($data = __fgetcsv($fp, $filesize))) {
@@ -70,12 +69,11 @@
 
                     for ($x = 0; $x < 10; $x++) {
                         #$out = str_replace(',', '', $data[$x]);
-
                         #echo $out . " ";
                         #echo str_replace('^', "&nbsp", str_pad($out, 30, '^')) .  ' ';
                     }
                     #echo str_replace(',', '', $data[0]) . " " . str_replace(',', '', $data[1]);
-                    into_db($conn, str_replace(',', '', $data[0]), str_replace(',', '', $data[1]));
+                    insert_to_database($conn, str_replace(',', '', $data[0]), str_replace(',', '', $data[1]));
                     echo '<br>';
                 }
                 $i++;
@@ -83,6 +81,7 @@
         }
     }
 
+    // load csv file in UTF-8 format
     function __fgetcsv(&$handle, $length = null, $d = ",", $e = '"')
     {
         $d = preg_quote($d);
@@ -114,6 +113,7 @@
 </head>
 
 <body>
+
 </body>
 
 </html>
