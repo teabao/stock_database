@@ -10,4 +10,4 @@ MariaDB [stock]> describe stock_name;
 | stock_code   | varchar(15) | NO   | PRI | NULL    |       |  
 | chinese_name | varchar(40) | NO   |     | NULL    |       |  
 +--------------+-------------+------+-----+---------+-------+  
-  
+  ds
