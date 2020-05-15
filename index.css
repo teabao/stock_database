@@ -1,3 +1,9 @@
+* {
+    font-family: Microsoft JhengHei;
+    color: rgb(255, 255, 255);
+    background-color: rgb(45, 55, 75);
+}
+
 html {
     text-align: center;
 }
@@ -9,4 +15,8 @@ html {
 
 th, td {
     padding: 10px 15px;
+}
+
+#sql {
+    color: rgb(159, 235, 97);
 }
