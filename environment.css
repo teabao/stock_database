@@ -1,0 +1,96 @@
+/* width */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    background: #2e313f;
+}
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: rgb(112, 112, 112);
+}
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.topnav {
+    position: fixed;
+    width: 100%;
+    background-color: rgba(55, 59, 65, 0.623);
+    overflow: hidden;
+    z-index: 100;
+}
+
+.topnav a {
+    float: right;
+    color: snow;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav a:hover {
+    background-color: rgba(255, 250, 250, 0.781);
+    color: black;
+}
+
+.topnav a.active {
+    background-color: rgb(91, 106, 155);
+    color: white;
+}
+
+.sidenav {
+    height: calc(100% - 50px);
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 50px;
+    left: 0;
+    background-color: rgb(59, 69, 92);
+    overflow-x: hidden;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 16px;
+    text-decoration: none;
+    font-size: 18px;
+    color: snow;
+    display: block;
+}
+
+.sidenav a:hover {
+    color: #d8a2a2;
+}
+
+.right-side {
+    height: calc(100% - 50px);
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 50px;
+    right: 0;
+    background-color: rgb(54, 62, 82);
+    overflow-x: hidden;
+}
+
+.right-side a {
+    padding: 8px 8px 8px 16px;
+    text-decoration: none;
+    font-size: 18px;
+    color: snow;
+    display: block;
+}
+
+.right-side a:hover {
+    color: #d8a2a2;
+}
