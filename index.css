@@ -1,0 +1,12 @@
+html {
+    text-align: center;
+}
+
+#query_result_table {
+    width: fit-content;
+    margin: 0 auto;
+}
+
+th, td {
+    padding: 10px 15px;
+}
