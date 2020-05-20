@@ -3,11 +3,11 @@
 error_reporting(E_ALL & ~E_NOTICE); # 設定輸出錯誤類型
 
 // Date in the past
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-header("Cache-Control: no-cache");
-header("Pragma: no-cache");
-header("Content-type:text/html;charset=UTF-8;");
-setlocale(LC_ALL, 'en_US.UTF-8');
+#header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+#header("Cache-Control: no-cache");
+#header("Pragma: no-cache");
+#header("Content-type:text/html;charset=UTF-8;");
+#setlocale(LC_ALL, 'en_US.UTF-8');
 
 $server = "localhost";
 $dbname =  "stock";
