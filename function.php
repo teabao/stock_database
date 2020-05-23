@@ -213,3 +213,52 @@ function create_history($conn)
         }
     }
 }
+
+function create_information($conn)
+{
+    $sql = "CREATE TABLE stock_information(
+            stock_code VARCHAR(15) NOT NULL,
+            chinese_name VARCHAR(40),
+            ISIN_code VARCHAR(15),
+            listing_date VARCHAR(15),
+            stock_type VARCHAR(40),
+            PRIMARY KEY (stock_code));";
+
+    create_table_from_csv($conn, "stock_information", $sql, "stock_type.csv");
+}
+
+// general func
+function create_table_from_csv($conn, $tablename, $sql_create, $filename)
+{
+    $r = mysqli_query($conn, $sql_create);
+    $fp = fopen($filename, "r");
+    $filesize = filesize($filename) + 1;
+
+    $num_line = 0;
+
+    $column_names = "(";
+
+    while (($data = __fgetcsv($fp, $filesize))) {
+        if ($num_line == 0) {
+            for ($j = 0; $j < count($data); $j++) {
+                $column_names .= $data[$j];
+                if ($j != count($data) - 1)
+                    $column_names .= ",";
+            }
+            $column_names .= ")";
+            //echo $column_names[4];
+        } else {
+            $sql = "INSERT INTO $tablename $column_names VALUES (";
+            for ($j = 0; $j < count($data); $j++) {
+                $sql .= "'$data[$j]'";
+                if ($j != count($data) - 1)
+                    $sql .= ",";
+            }
+            $sql .= ");";
+            //echo $sql . "<br>";
+            $result = mysqli_query($conn, $sql);
+            //query_sql($conn, $sql);
+        }
+        $num_line++;
+    }
+}
