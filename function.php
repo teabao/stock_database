@@ -13,7 +13,9 @@ function query_sql($conn, $sql)
             echo "<th>$field_info->name</th>";
         }
         echo "</tr></thead>";
-        while ($row = mysqli_fetch_assoc($result)) {
+        //while ($row = mysqli_fetch_assoc($result)) {
+        //while ($row = mysqli_fetch_array($result)) {
+        while ($row = mysqli_fetch_row($result)) {
             echo "<tr>";
             foreach ($row as $key => $value)
                 echo "<td>$value</td>";
