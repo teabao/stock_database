@@ -1,0 +1,19 @@
+input, select, #newCondition {
+    background-color: transparent;
+    color: rgb(211, 211, 211);
+    border: 2px solid #cfcfcf;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+input:hover, select:hover, #newCondition:hover {
+    background-color: #555555;
+    color: white;
+}
