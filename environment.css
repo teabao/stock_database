@@ -1,22 +1,14 @@
-/* width */
-
 ::-webkit-scrollbar {
     width: 10px;
 }
-
-/* Track */
 
 ::-webkit-scrollbar-track {
     background: #2e2e31;
 }
 
-/* Handle */
-
 ::-webkit-scrollbar-thumb {
     background: rgb(112, 112, 112);
 }
-
-/* Handle on hover */
 
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
@@ -50,7 +42,7 @@
 
 .sidenav {
     height: calc(100% - 50px);
-    width: 200px;
+    width: 250px;
     position: fixed;
     z-index: 1;
     top: 50px;
@@ -71,9 +63,21 @@
     color: #d8a2a2;
 }
 
+.side_table td {
+    padding: 8px 8px 8px 16px;
+}
+
+.side_table tr {
+    cursor: pointer;
+}
+
+.side_table tr:hover {
+    color: rgb(253, 103, 76);
+}
+
 .right-side {
     height: calc(100% - 50px);
-    width: 200px;
+    width: 250px;
     position: fixed;
     z-index: 1;
     top: 50px;
@@ -92,4 +96,17 @@
 
 .right-side a:hover {
     color: #d8a2a2;
+}
+
+.right-side .smallTitle {
+    margin: 20px;
+}
+
+.right-side .q_type {
+    color: rgb(147, 241, 138);
+}
+
+hr {
+    margin: 20px;
+    opacity: 70%;
 }

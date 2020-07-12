@@ -1,4 +1,157 @@
-function set_chart(stock_code) {
+const delta = 0, delta_min = 0, delta_max = 0;
+var charts = [];
+var syncdone = true;
+
+var syncEvent = {
+    afterSetExtremes: function (e) {
+        if (!syncdone)
+            return;
+        //console.log(e)
+        syncdone = false;
+        charts.forEach(element => {
+            //console.log(e.target.chart == element)
+            //console.log(element);
+            if (e.target.chart != element && !(element.xAxis[0].min == e.min && element.xAxis[0].max == e.max))
+                element.xAxis[0].setExtremes(e.min, e.max);
+        });
+        syncdone = true;
+    }
+};
+
+function query_result_band(dates) {
+    var dates_plotBands = [];
+    if (dates) {
+        dates.forEach(element => {
+            var obj_tmp = {
+                from: new Date(element[0]).getTime() - delta_min - delta,
+                to: new Date(element[1]).getTime() + delta_max - delta,
+                color: 'rgba(68, 170, 213, 0.2)',
+                label: {
+                    text: ''
+                }
+            };
+            dates_plotBands.push(obj_tmp);
+        });
+    }
+    return dates_plotBands;
+}
+
+function create_bias(stock_code, seriesOptions, dates_plotBands) {
+    var chart = Highcharts.stockChart('bias-chart', {
+        chart: {
+            backgroundColor: 'rgba(0,0,0,0)',
+            zoomType: null
+            // pinchType: null
+        },
+        rangeSelector: {
+            selected: 4
+        },
+        xAxis: {
+            plotBands: dates_plotBands,
+            events: syncEvent
+        },
+        title: {
+            text: "乖離率 Bias"
+        },
+        plotOptions: {
+            series: {
+                showInLegend: true
+            }
+        },
+        tooltip: {
+            pointFormat: '<span style="color:{series.color}">BIAS{series.name}</span>: <b>{point.y}</b>',// ({point.change})<br/>
+            valueDecimals: 2,
+            followTouchMove: false,
+            split: true
+        },
+        series: seriesOptions
+    });
+
+    charts.push(chart);
+}
+
+function set_bias(stock_code, dates = []) {
+    var dates_plotBands = query_result_band(dates);
+
+    var seriesOptions = [],
+        seriesCounter = 0,
+        names = ['5', '20', '60'];
+
+    $.each(names, function (i, name) {
+        $.getJSON(`get_bias.php?stock_code=${stock_code}&day_count=${name}`, function (data) {
+            seriesOptions[i] = {
+                name: name,
+                data: data
+            };
+            seriesCounter += 1;
+            if (seriesCounter === names.length) {
+                create_bias(stock_code, seriesOptions, dates_plotBands);
+            }
+        });
+    });
+}
+
+function create_ma(stock_code, seriesOptions, dates_plotBands) {
+    var chart = Highcharts.stockChart('ma-chart', {
+        chart: {
+            backgroundColor: 'rgba(0,0,0,0)',
+            zoomType: null
+            // pinchType: null
+        },
+        rangeSelector: {
+            selected: 4
+        },
+        xAxis: {
+            plotBands: dates_plotBands,
+            events: syncEvent
+        },
+        title: {
+            text: "均線 Moving Average"
+        },
+        plotOptions: {
+            series: {
+                showInLegend: true
+            }
+        },
+        tooltip: {
+            pointFormat: '<span style="color:{series.color}">MA{series.name}</span>: <b>{point.y}</b>',// ({point.change})<br/>
+            valueDecimals: 2,
+            followTouchMove: false,
+            split: true
+        },
+        series: seriesOptions
+    });
+
+    charts.push(chart);
+}
+
+function set_ma(stock_code, dates = []) {
+    var dates_plotBands = query_result_band(dates);
+
+    var seriesOptions = [],
+        seriesCounter = 0,
+        names = ['5', '20', '60'];
+
+    $.each(names, function (i, name) {
+        //console.log('https://data.jianshukeji.com/jsonp?filename=json/' + name.toLowerCase() + '-c.json&callback=?');
+        $.getJSON(`get_ma.php?stock_code=${stock_code}&day_count=${name}`, function (data) {
+            seriesOptions[i] = {
+                name: name,
+                data: data
+            };
+            // As we're loading the data asynchronously, we don't know what order it will arrive. So
+            // we keep a counter and create the chart when all the data is loaded.
+            seriesCounter += 1;
+            if (seriesCounter === names.length) {
+                create_ma(stock_code, seriesOptions, dates_plotBands);
+            }
+        });
+    });
+}
+
+function set_chart(stock_code, dates = []) {
+    var dates_plotBands = query_result_band(dates);
+
     Highcharts.setOptions({
         lang: {
             rangeSelectorZoom: ''
@@ -49,13 +202,14 @@ function set_chart(stock_code) {
                 type: 'line'
             },
             rangeSelector: {
-                selected: 1,
-                inputDateFormat: '%Y-%m-%d'
+                selected: 4
+                //inputDateFormat: '%Y-%m-%d'
             },
             title: {
                 text: stock_code_num + " " + obj.chinese_name
             },
             xAxis: {
+                /*
                 dateTimeLabelFormats: {
                     millisecond: '%H:%M:%S.%L',
                     second: '%H:%M:%S',
@@ -65,11 +219,13 @@ function set_chart(stock_code) {
                     week: '%m-%d',
                     month: '%y-%m',
                     year: '%Y'
-                }
+                },*/
+                plotBands: dates_plotBands,
+                events: syncEvent
             },
             tooltip: {
-                split: false,
-                shared: true,
+                //split: false,
+                //shared: true,
             },
             yAxis: [{
                 labels: {
@@ -122,8 +278,10 @@ function set_chart(stock_code) {
                 }
             }]
         });
+        charts.push(chart);
     });
 }
+
 
 /*// ! test
 

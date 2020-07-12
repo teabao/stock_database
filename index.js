@@ -3,12 +3,13 @@ function newCondition() {
     let area = document.getElementById('conditionArea');
     let x =
         `<div class="condition">
+                <input type="hidden" id="condition${conditionNum}" name="condition${conditionNum}" value="true">
                 <select id="conditionVariable${conditionNum}" name="conditionVariable${conditionNum}">
-                    <option value="open">開盤</option>
-                    <option value="close">收盤</option>
-                    <option value="high">高價</option>
-                    <option value="low">低價</option>
-                    <option value="volumn">成交量</option>
+                    <option value="open_price">開盤</option>
+                    <option value="close_price">收盤</option>
+                    <option value="high_price">高價</option>
+                    <option value="low_price">低價</option>
+                    <option value="volume">成交量</option>
                 </select>
                 <select id="conditionCompare${conditionNum}" name="conditionCompare${conditionNum}">
                     <option value=">">大於</option>
