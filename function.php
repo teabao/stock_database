@@ -99,6 +99,7 @@ function __fgetcsv(&$handle, $length = null, $d = ",", $e = '"')
 
 function read_sql_file($filename)
 {
+    $templine = "";
     $lines = file($filename);
     // Loop through each line
     foreach ($lines as $line) {
@@ -198,9 +199,9 @@ function create_history($conn)
 
             while (($data = __fgetcsv($fp, $filesize, ",", '"'))) {
                 if ($i > 0) {
-                    $sql = "INSERT INTO $stock_code (record_date,open_price,high_price,low_price,close_price,adjust_price,volume)
+                    $sql = "INSERT INTO $stock_code (record_date,open_price,high_price,
+                            low_price,close_price,adjust_price,volume)
                             VALUES (";
-                    #insert_to_database($conn, str_replace(',', '', $data[0]), str_replace(',', '', $data[1]));
                     for ($i = 0; $i < count($data); $i++) {
                         $sql .= "'$data[$i]'";
                         if ($i != count($data) - 1)

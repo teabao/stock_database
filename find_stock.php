@@ -6,6 +6,7 @@ require("connect.php");
 require("function.php");
 require("view_func.php");
 require("basic_query.php");
+require("find_stock_function.php");
 #$conn->close();
 
 /*
@@ -48,6 +49,33 @@ if ($_GET['stock_code'] == "")
     </div>
     <main>
         <h1>類股查詢</h1>
+        <form class="filter" action="/find_stock.php" method="POST">
+            <input type="hidden" id="enable_basic_query" name="enable_basic_query" value="true">
+            <table>
+                <tr>
+                    <td><label for="stock_type">分類 </label></td>
+                    <td>
+                        <select name="stock_type" id="stock_type">
+                            <?php
+                            get_type($conn);
+                            ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="day_from">上市日期</label></td>
+                    <td><input type="date" id="day_from" name="day_from" value="1900-01-05" required></td>
+                    <td>~</td>
+                    <td><input type="date" id="day_to" name="day_to" value="2020-05-14" required></td>
+                </tr>
+            </table>
+            <input type="number" id="successive_day_count" name="successive_day_count" value="1" style="width: 150px;">
+            <label for="successive_day_count">天之內滿足以下條件</label>
+            <div id="conditionArea"></div>
+            <br>
+            <input type="submit">
+        </form>
+        <button id="newCondition" onclick="newCondition()">Add Condition</button>
     </main>
 
 
