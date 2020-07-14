@@ -67,11 +67,11 @@
     padding: 8px 8px 8px 16px;
 }
 
-.side_table tr {
+.side_table tr, .tr_click {
     cursor: pointer;
 }
 
-.side_table tr:hover {
+.side_table tr:hover, .tr_click:hover {
     color: rgb(253, 103, 76);
 }
 
@@ -108,5 +108,10 @@
 
 hr {
     margin: 20px;
+    opacity: 70%;
+}
+
+hr.down {
+    margin: 40px 80px;
     opacity: 70%;
 }

@@ -1,3 +1,9 @@
+<?php
+header('Content-Type: application/json; charset=utf-8');
+require("connect.php");
+$data = array();
+$stock_code = $_GET['stock_code'];
+$sql = "
 SELECT  record_date 
        ,close_price
        ,NinedayMax 
@@ -11,7 +17,7 @@ FROM
 				,high_price
 				,low_price 
 				,rank() OVER( ORDER BY record_date ) AS idx
-		FROM 0050tw 
+		FROM $stock_code 
 	)
 	SELECT  record_date 
 	       ,close_price 
@@ -28,3 +34,18 @@ FROM
 			) AS NinedayMin 
 	FROM ids AS main 
 )AS t;
+";
+//echo $sql;
+$result = mysqli_query($conn, $sql);
+
+while ($row = mysqli_fetch_assoc($result)) {
+    $tmp = array();
+    foreach ($row as $key => $value) {
+        if ($key == "record_date")
+            $tmp[] = strtotime($value) * 1000;
+        else if ($key == "RSV")
+            $tmp[] = round((float) $value, 3);
+    }
+    $data[] = $tmp;
+}
+echo json_encode($data);

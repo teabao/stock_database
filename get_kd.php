@@ -1,3 +1,9 @@
+<?php
+header('Content-Type: application/json; charset=utf-8');
+require("connect.php");
+$data = array();
+$stock_code = $_GET['stock_code'];
+$sql = "
 with rsvTable AS(
 	SELECT  record_date 
 			,close_price 
@@ -13,7 +19,7 @@ with rsvTable AS(
 					,high_price 
 					,low_price 
 					,rank() OVER( ORDER BY record_date ) AS idx
-			FROM 0050tw 
+			FROM $stock_code
 		)
 		SELECT  record_date 
 				,close_price 
@@ -52,3 +58,28 @@ SELECT record_date,
 			WHERE tmp3.idx BETWEEN main3.idx-8 AND main3.idx 
        ) AS dLine
 FROM k_tmp as main3;
+";
+//echo $sql;
+$result = mysqli_query($conn, $sql);
+
+$data1 = array();
+$data2 = array();
+
+while ($row = mysqli_fetch_assoc($result)) {
+    $tmp1 = array();
+    $tmp2 = array();
+    foreach ($row as $key => $value) {
+        if ($key == "record_date") {
+            $tmp1[] = strtotime($value) * 1000;
+            $tmp2[] = strtotime($value) * 1000;
+        } else if ($key == "kLine")
+            $tmp1[] = round((float) $value, 3);
+        else if ($key == "dLine")
+            $tmp2[] = round((float) $value, 3);
+    }
+    $data1[] = $tmp1;
+    $data2[] = $tmp2;
+}
+$data[] = $data1;
+$data[] = $data2;
+echo json_encode($data);

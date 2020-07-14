@@ -18,6 +18,54 @@ var syncEvent = {
     }
 };
 
+function create_rsv(stock_code, seriesOptions, dates_plotBands) {
+    var chart = Highcharts.stockChart('rsv-chart', {
+        chart: {
+            backgroundColor: 'rgba(0,0,0,0)',
+            zoomType: null
+            // pinchType: null
+        },
+        rangeSelector: {
+            selected: 4
+        },
+        xAxis: {
+            plotBands: dates_plotBands,
+            events: syncEvent
+        },
+        title: {
+            text: "未成熟隨機值 RSV"
+        },
+        plotOptions: {
+            series: {
+                showInLegend: true
+            }
+        },
+        tooltip: {
+            pointFormat: '<span style="color:{series.color}">BIAS{series.name}</span>: <b>{point.y}</b>',// ({point.change})<br/>
+            valueDecimals: 2,
+            followTouchMove: false,
+            split: true
+        },
+        series: seriesOptions
+    });
+
+    charts.push(chart);
+}
+
+function set_rsv(stock_code, dates = []) {
+    var dates_plotBands = query_result_band(dates);
+
+    var seriesOptions = [];
+
+    $.getJSON(`get_rsv.php?stock_code=${stock_code}`, function (data) {
+        seriesOptions[0] = {
+            name: name,
+            data: data
+        };
+        create_rsv(stock_code, seriesOptions, dates_plotBands);
+    });
+}
+
 function query_result_band(dates) {
     var dates_plotBands = [];
     if (dates) {
@@ -34,6 +82,61 @@ function query_result_band(dates) {
         });
     }
     return dates_plotBands;
+}
+
+function create_kd(stock_code, seriesOptions, dates_plotBands, name) {
+    var chart = Highcharts.stockChart('kd-chart', {
+        chart: {
+            backgroundColor: 'rgba(0,0,0,0)',
+            zoomType: null
+            // pinchType: null
+        },
+        rangeSelector: {
+            selected: 4
+        },
+        xAxis: {
+            plotBands: dates_plotBands,
+            events: syncEvent
+        },
+        title: {
+            text: "KD指標線"
+        },
+        plotOptions: {
+            series: {
+                showInLegend: true
+            }
+        },
+        tooltip: {
+            pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b>',// ({point.change})<br/>
+            valueDecimals: 2,
+            followTouchMove: false,
+            split: true
+        },
+        series: seriesOptions
+    });
+
+    charts.push(chart);
+}
+
+function set_kd(stock_code, dates = []) {
+
+    var dates_plotBands = query_result_band(dates);
+
+    //$.each(names, function (i, name) {});
+    //console.log(`get_kd.php?stock_code=${stock_code}`);
+    $.getJSON(`get_kd.php?stock_code=${stock_code}`, function (data) {
+        //console.log(data);
+        var seriesOptions = [
+            {
+                name: "kLine",
+                data: data[0]
+            }, {
+                name: "dLine",
+                data: data[1]
+            }
+        ]
+        create_kd(stock_code, seriesOptions, dates_plotBands);
+    });
 }
 
 function create_bias(stock_code, seriesOptions, dates_plotBands) {

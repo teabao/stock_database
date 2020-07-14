@@ -6,12 +6,13 @@ require("connect.php");
 require("function.php");
 require("view_func.php");
 require("basic_query.php");
+require("msg.php");
 #$conn->close();
 
-/*
+
 if ($_GET['stock_code'] == "")
-    header("Location: /?stock_code=0055");
-*/
+    header("Location: /?stock_code=0050");
+
 
 //==========================================================
 ?>
@@ -41,10 +42,9 @@ if ($_GET['stock_code'] == "")
 
 <body>
     <div class="topnav">
-        <a class="active" href="#home">Home</a>
-        <a href="#news">News</a>
-        <a href="#contact">Contact</a>
-        <a href="#about">About</a>
+        <a class="active" href="index.php">技術分析</a>
+        <a href="find_stock.php">類股查詢</a>
+        <a href="about.php">關於</a>
     </div>
     <div class="sidenav">
         <table class="side_table">
@@ -96,6 +96,8 @@ if ($_GET['stock_code'] == "")
                 set_chart(stockCode, basic_query_result);
                 set_ma(stockCode, basic_query_result);
                 set_bias(stockCode, basic_query_result);
+                set_rsv(stockCode, basic_query_result);
+                set_kd(stockCode, basic_query_result);
 
                 let query_result_date = document.getElementById("query_result_date");
                 basic_query_result.forEach(element => {
@@ -122,6 +124,16 @@ if ($_GET['stock_code'] == "")
             <div class='stock-code'>
             </div>
             <div id='bias-chart' class="chart"></div>
+        </div>
+        <div class='rsv-chart-container chart-container'>
+            <div class='stock-code'>
+            </div>
+            <div id='rsv-chart' class="chart"></div>
+        </div>
+        <div class='kd-chart-container chart-container'>
+            <div class='stock-code'>
+            </div>
+            <div id='kd-chart' class="chart"></div>
         </div>
 
         <div class="query_title">個股趨勢查詢</div>
@@ -177,12 +189,37 @@ if ($_GET['stock_code'] == "")
 
 
 
+        <hr class="down">
 
+        <div class="query_title">留言板</div>
 
+        <table class='msg_table' RULES=ROWS>
+            <tr>
+                <td class="m_name"><b>暱稱</b></td>
+                <td class="m_text"><b>留言</b></td>
+                <td class="m_time"><b>時間</b></td>
+            </tr>
+            <?php check_msg($conn);
+            show_msg($conn); ?>
+
+        </table>
+
+        <br>
+
+        <form action="/?stock_code=<?php echo $_GET['stock_code']; ?>" method="POST">
+            <input type="hidden" id="new_msg" name="new_msg" value="true">
+            <label for="msg_name">暱稱</label>
+            <input class="msg" type="text" id="msg_name" name="msg_name" maxlength="10">
+            <label for="msg_text">留言</label>
+            <input class="msg" type="text" id="msg_text" name="msg_text" maxlength="20">
+            <input type="submit">
+        </form>
+
+        <br><br><br><br>
 
 
         <!-- test field-->
-        <div id="demo"></div>
+        <!--div id="demo"></div>
         <div>write you sql here (for test)</div>
         <form action="/?stock_code=<?php echo $_GET['stock_code']; ?>" method="POST">
             <textarea id="sql" name="sql" rows="5" cols="50"></textarea><br>
@@ -196,7 +233,7 @@ if ($_GET['stock_code'] == "")
             echo "query result:<br>";
             query_sql($conn, $sql);
             ?>
-        </div>
+        </div-->
     </main>
 
 

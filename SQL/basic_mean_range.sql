@@ -19,7 +19,7 @@ condition_result as
         WHERE ( main.record_date BETWEEN '2008-01-07' AND '2020-05-14' )  
     ) AS q
     WHERE ma > 70
-)
+)   
 SELECT MAX(record_date) AS max_date
     ,MIN(record_date) AS min_date,diff
 FROM condition_result AS a

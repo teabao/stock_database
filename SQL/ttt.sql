@@ -30,25 +30,12 @@ with rsvTable AS(
 				) AS NinedayMin 
 		FROM ids AS main 
 	)AS t 
-),
-k_tmp AS (
-    SELECT  record_date 
-       ,RSV 
-       ,idx 
-       ,(
-            SELECT SUM( tmp2.RSV *(1/3)*POW(2/3,main2.idx-tmp2.idx) )
-            FROM rsvTable AS tmp2
-            WHERE tmp2.idx BETWEEN main2.idx-8 AND main2.idx 
-		)AS kLine
-    FROM rsvTable AS main2
 )
-SELECT record_date,
-       RSV,
-       idx,
-       kLine,
-       (
-            SELECT SUM( tmp3.kLine *(1/3)*POW(2/3,main3.idx-tmp3.idx) )
-			FROM k_tmp AS tmp3
-			WHERE tmp3.idx BETWEEN main3.idx-8 AND main3.idx 
-       ) AS dLine
-FROM k_tmp as main3;
+SELECT  record_date,
+        RSV, 
+        idx,
+        LAG(kLine,1) OVER( ORDER BY idx ) lastK,
+        ( lastK*2/3 + RSV/3 ) AS kLine
+        
+FROM rsvTable AS main2;
+

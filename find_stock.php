@@ -42,20 +42,20 @@ if ($_GET['stock_code'] == "")
 
 <body>
     <div class="topnav">
-        <a class="active" href="find_stock.php">類股查詢</a>
-        <a href="#news">News</a>
-        <a href="#contact">Contact</a>
-        <a href="#about">About</a>
+        <a class="active" href="index.php">技術分析</a>
+        <a href="find_stock.php">類股查詢</a>
+        <a href="about.php">關於</a>
     </div>
     <main>
         <h1>類股查詢</h1>
         <form class="filter" action="/find_stock.php" method="POST">
-            <input type="hidden" id="enable_basic_query" name="enable_basic_query" value="true">
+            <input type="hidden" id="enable_query" name="enable_query" value="true">
             <table>
                 <tr>
-                    <td><label for="stock_type">分類 </label></td>
+                    <td><label for="stock_type">*分類 </label></td>
                     <td>
                         <select name="stock_type" id="stock_type">
+                            <option value='all'>所有產業別</option>
                             <?php
                             get_type($conn);
                             ?>
@@ -63,19 +63,29 @@ if ($_GET['stock_code'] == "")
                     </td>
                 </tr>
                 <tr>
-                    <td><label for="day_from">上市日期</label></td>
+                    <td><label for="day_from">*上市日期</label></td>
                     <td><input type="date" id="day_from" name="day_from" value="1900-01-05" required></td>
                     <td>~</td>
                     <td><input type="date" id="day_to" name="day_to" value="2020-05-14" required></td>
                 </tr>
+                <tr>
+                    <td><label for="q_name">名字</label></td>
+                    <td><input type="text" id="q_name" name="q_name" style="width:150px;" maxlength="20"></td>
+                    <td></td>
+                    <td>可使用 Regular Expression</td>
+                </tr>
+                <tr>
+                    <td><label for="q_code">代號</label></td>
+                    <td><input type="text" id="q_code" name="q_code" style="width:150px;" maxlength="20"></td>
+                    <td></td>
+                    <td>可使用 Regular Expression</td>
+                </tr>
             </table>
-            <input type="number" id="successive_day_count" name="successive_day_count" value="1" style="width: 150px;">
-            <label for="successive_day_count">天之內滿足以下條件</label>
-            <div id="conditionArea"></div>
             <br>
             <input type="submit">
         </form>
-        <button id="newCondition" onclick="newCondition()">Add Condition</button>
+        <br>
+        <?php get_list($conn) ?>
     </main>
 
 

@@ -63,3 +63,28 @@ th, td {
     border-radius: 10px;
     line-height: 40px;
 }
+
+#msg_name {
+    width: 100px;
+}
+
+#msg_text {
+    width: 350px;
+}
+
+.msg_table tr {
+    border: 1px solid white;
+}
+
+.msg_table .m_name {
+    width: 150px;
+}
+
+.msg_table .m_text {
+    width: 350px;
+    text-align: left;
+}
+
+.msg_table .m_time {
+    width: 150px;
+}
